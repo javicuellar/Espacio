@@ -1,47 +1,33 @@
 # -*- coding: utf-8 -*-
 
-'''
-import locale
-
-# Definimos el formato que deseamos
-locale.setlocale(locale.LC_ALL, "es_ES.utf-8")
-
-
-def formateo_num(num):
-	return locale.format("%.*f", (2,num), True)
-'''
 	
 
-class Fichero(object):
-	def __init__(self, nombre, extension, tipo, fechamod, tamano):
+class Fichero():
+	def __init__(self, nombre, extension, tipo, fechamod, tamano, error):
 		self.nombre = nombre
 		self.extension = extension
 		self.tipo = tipo
 		self.fechamod = fechamod
 		self.tamano = tamano
+		self.error = error
 
 	def imprimir(self):
 		print ('   - ', self.fechamod, self.nombre, self.extension, self.tipo, self.tamano)
 		
-	def exportarcsv(self, vol, ruta, faudit, tamanodir):
-		nom = self.nombre + self.extension
-		if tamanodir < 1024:
-			tam = '%.3f' % (self.tamano/(1024)) + ' KB.'
-		else:
-			tam = '%.3f' % (self.tamano/(1024*1024)) + ' MB.'
-		#return [vol, ruta, nom, self.fechamod, '', '', tam, '', faudit]
-		return [vol, ruta, nom, self.fechamod, '', '', self.tamano, '', faudit]
+	def exportar(self):
+		return ['a', self.nombre, self.extension, self.fechamod, self.tamano, self.tipo, self.error]
 
 
 
 		
-class Directorio(object):
-	def __init__(self, path, fechamod, numfiles, numdir, tamano):
+class Directorio():
+	def __init__(self, path, fechamod, numfiles, numdir, tamano, error):
 		self.path = path
 		self.fechamod = fechamod
 		self.numfiles = numfiles
 		self.numdir = numdir
 		self.tamano = tamano
+		self.error = error
 		self.ficheros = []
 		self.subdirectorios = []
 		
@@ -53,29 +39,20 @@ class Directorio(object):
 		for dir in self.subdirectorios:
 			dir.imprimir()
 
-	def exportarcsv(self, vol, libre, faudit ):
-		lib = '%.3f' % (libre/(1024*1024*1024)) + ' GB.'
-		if self.tamano < 1024:
-			tam = '%.3f' % (self.tamano/(1024)) + ' KB.'
-		elif self.tamano < 1024*1024:
-			tam = '%.3f' % (self.tamano/(1024*1024)) + ' MB.'
-		else:
-			tam = '%.3f' % (self.tamano/(1024*1024*1024)) + ' GB.'
-
-		#lista = [[vol, self.path, '', self.fechamod, self.numfiles, self.numdir, tam, lib, faudit]]
-		lista = [[vol, self.path, '', self.fechamod, self.numfiles, self.numdir, self.tamano, libre, faudit]]
+	def exportar(self):
+		salida = [['d', self.path, self.fechamod, self.numfiles, self.numdir, self.tamano, self.error]]
 
 		for file in self.ficheros:
-			lista.append(file.exportarcsv(vol, self.path, faudit, self.tamano))
+			salida.append(file.exportar())
 		
 		for dir in self.subdirectorios:
-			lista += dir.exportarcsv(vol, 0, faudit)
+			salida += dir.exportar()
 
-		return lista
+		return salida
 
 
         
-class Unidad(object):
+class Unidad():
 	def __init__(self, numserie, volumen, libre, fechaudit):
 		self.numserie = numserie
 		self.volumen = volumen
@@ -86,6 +63,11 @@ class Unidad(object):
 	def imprimir(self):
 		print ('-' * 75)
 		print ('\n', self.numserie, self.volumen, self.libre, self.fechaudit, '\n')
+	
+	def exportar(self):
+		salida = [['u', self.numserie, self.volumen, self.libre, self.fechaudit]]
+		salida += self.directorio.exportar()
+		return salida
 
 
 

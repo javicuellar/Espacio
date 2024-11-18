@@ -2,7 +2,7 @@
 ======================================================================
 
 
-	El proyecto pretende leer los archivos y subdirectorios de una ruta data, grabarlos en base de datos SQLite y posteriormente realizar un reporte (en .csv) y su análisis.
+El proyecto pretende leer los archivos y subdirectorios de una ruta data, grabarlos en base de datos SQLite y posteriormente realizar un reporte (en .csv) y su análisis.
 
 
 

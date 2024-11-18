@@ -14,7 +14,7 @@ tipos = {'.py':'Python', '.pyc':'Python', '.txt':'texto', '.jpg':'foto', '.mp4':
 sintipo = []
 
 
-tmp = u'.\Espacio\Tmp\dirtmp.txt'
+tmp = u'.\\Tmp\dirtmp.txt'
 
 
 

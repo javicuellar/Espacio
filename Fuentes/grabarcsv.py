@@ -17,7 +17,7 @@ def formateo_num(num):
 '''
 
 
-filecsv = u'.\Espacio\Tmp\Informe.csv'
+filecsv = u'.\Tmp\Informe.csv'
 
 
 

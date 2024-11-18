@@ -43,12 +43,7 @@ def FormatoDirectorios(lista, dicnumserie):
 
 
 def Exportarcsv(lista):
-	informe = u'Informe.csv'
-	
-	if os.path.exists(informe):
-		os.remove(informe)
-	
-	doc = open(informe, 'w', newline='')
+	doc = open(informe, 'a', newline='')
 
 	doc_csv_w = csv.writer(doc, delimiter=';') 	# variable declarada por convencion entre programadores
 

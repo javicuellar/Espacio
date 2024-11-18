@@ -1,76 +1,60 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
 
 import sys, time
-import lectura   as l
-import grabacion as g
-import analisis  as a
+
+
+# Módulos del proyecto
+import lectura   as l		# Módulo de lectura de información de la Unidad, extrae sus directorios y ficheros
+import analisis  as a		# 
+import grabarcsv as g		# 
+
+
+
+informe = u'.\Espacio2\Tmp\Informe.csv'
 
 
 
 
-def leer(path, numserie, fechaudit):
-	archivos, directorios, error = l.leerdir(path)
-	numdir, numfile, peso, fechamod = 0,0,0, ''
-	for dir in directorios:
-		numdir += 1
-		(p,c,d,f,e) = leer(dir, numserie, fechaudit)
-		numdir += d
-		f = f + e
-		tablas.Grabardir((numserie, dir, f, c, d, p, fechaudit))
-					#(numserie, path, fechamod, numfiles, numdir, tamano, fechaudit)
-		peso += p
-		numfile += c
-		fechamod = f
-	#print ('      Directorio: ', path)					# debug directorio leido
-	for file in archivos:
-		numfile += 1
-		infofile = l.leerfile(path, file, numserie)
-		peso += infofile[6]
-		if fechamod < infofile[5]:
-			fechamod = infofile[5]
-		tablas.Grabarfile(infofile)
-	print ('> Directorio: ', path, '  Num. files: ', numfile, '  Num. dir: ', numdir, '  Peso: ', peso)	# debub num. archivos y tamano
-	return (peso, numfile, numdir, fechamod, error)
+def obtener_ruta():
+	ruta = ''
+	try:
+		ruta = sys.argv[1]
+	except:
+		print ('Por favor indique unidad a leer.')
+	return ruta
 
 
 
-tablas = g.BaseDatos() 
 
-try:
-	path = sys.argv[1]
-	print ('  > Path: ', path)
-	print ('-' * 70)
+if __name__ == "__main__":
+	ruta = obtener_ruta()
 	
-	tiempo_inicial = time.time()
+	if ruta != '':
+		tiempo_inicial = time.time() 
 		
-	infounidad = l.leerunidad(path)		#(numserie, volumen, fechamod, numfiles, numdir, tamano, libre, fechaudit)
-
-	infounidad[5], infounidad[3], infounidad[4], infounidad[2], error = leer(path, infounidad[0], infounidad[7])
-
-	tuplaunidad = tuple(infounidad)
-	print (tuplaunidad)
-	tablas.Grabarunidad(tuplaunidad)
-
-	tiempo_final = time.time() 
-	print (tiempo_final - tiempo_inicial)
-
-except:
-	# Si no se pasa parï¿½metros con la ruta a analizar
-	# Sacar un informe en fichero excel (formato .csv) de las unidades
-
-	tiempo_inicial = time.time()
-	
-	unidades = tablas.Leerunidades()
-
-	directorios = []
-	for unidad in unidades:
-		directorios += tablas.Leerdirectorios(unidad[0])
+		# Analizar la información de la unidad, directorios y ficheros y
+		# se almacena en memoria en clase Unidad, Directorios y Ficheros
+		unidad = l.leer(ruta)
 		
-	listaunidades, dicnumserie = a.FormatoUnidaddes(unidades)
-	exportar = listaunidades + a.FormatoDirectorios(directorios, dicnumserie)
+		tiempo_final = time.time() 
+		print (tiempo_final - tiempo_inicial)
 		
-	a.Exportarcsv(exportar)
+		# Utilizamos módulo grabarcsv para exportar la información de la unidad a fichero .CSV
+		#g.Exportarcsv(uni, informe)
 
-	tiempo_final = time.time() 
-	print (tiempo_final - tiempo_inicial)
+	else:
+		# Utilizamos módulo grabarcsv para exportar la información de la unidad a fichero .CSV
+		#g.Exportarcsv(uni, informe)
+		pass
+		'''
+		unidades = tablas.Leerunidades()
+
+		directorios = []
+		for unidad in unidades:
+			directorios += tablas.Leerdirectorios(unidad[0])
+		
+		listaunidades, dicnumserie = a.FormatoUnidaddes(unidades)
+		exportar = listaunidades + a.FormatoDirectorios(directorios, dicnumserie)
+		
+		a.Exportarcsv(exportar)
+		'''

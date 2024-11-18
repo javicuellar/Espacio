@@ -5,14 +5,12 @@ import sqlite3, os
 # La clase BaseDatos implementa el software de mantenimiento de la base de datos 
 # de Unidades, Directorios y Archivos.
 
-
-
 class BaseDatos:
 
     def __init__(self):
         # Comprobamos si la base de datos existe ya, en caso contrario hay que crearla. 
         # Esto, por supuesto, ocurrirá la primera vez que se ejecute el programa.
-        BDfile = u'espacio.sqlite'
+        BDfile = u'.\Espacio\espacio.sqlite'
         if not os.path.exists(BDfile):
             self.bd = sqlite3.connect(BDfile)
             

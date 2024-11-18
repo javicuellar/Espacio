@@ -1,4 +1,4 @@
-# Proyecto ESPACIO 1.0, analizador de discos (unidades, carpetas, usbs).
+# Proyecto ESPACIO 1.1, analizador de discos (unidades, carpetas, usbs).
 ======================================================================
 
 
@@ -6,12 +6,14 @@ El proyecto pretende leer los archivos y subdirectorios de una ruta data, grabar
 
 
 
-Componentes actuales del proyecto (31/08/2017):
+Componentes actuales del proyecto (1/09/2017):
 
-	__main__.py	Script principal
-	lectura.py	Módulo encargado de leer los ficheros y directorios
+	__main__.py		Script principal
+	lectura.py		Módulo encargado de leer los ficheros y directorios
 	grabacion.py	Módulo encargado de grabar la información en SQLite y recuperarla
-	analisis.py	Módulo encargado de la extracción de la info. a fichero .csv
+	analisis.py		Módulo encargado de la extracción de la info. a fichero .csv
+	grabarcsv.py	Módulo grabación csv
+	memoria.py		Módulo tratamiento en memoria
 
 
 ---------------------------------------------------------------------------------------------------

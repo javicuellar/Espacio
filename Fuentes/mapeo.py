@@ -29,22 +29,18 @@ def leerlinea(file):
 
 
 def mapeo_string(palabra):
-	cambio = False
-	salida = ''
+	salida, error = '', ''
 	for caracter in palabra:
 		byte = caracter.encode('utf-8')
 		if byte in dicbyte:
 			# caracter transformado que da error o es invalido
 			# print (byte, '>', dicbyte[byte])
 			byte = dicbyte[byte]
-			cambio = True
+			error = '(cambiado)'
 		#print (byte, '>')
 		salida += byte.decode('utf-8')
 	
-	if cambio:
-		salida += ' (cambiado)'
-
-	return salida
+	return salida, error
 
 
 

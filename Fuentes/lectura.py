@@ -14,7 +14,7 @@ tipos = {'.py':'Python', '.pyc':'Python', '.txt':'texto', '.jpg':'foto', '.mp4':
 sintipo = []
 
 
-tmp = u'.\\Tmp\dirtmp.txt'
+tmp = u'.\Tmp\dirtmp.txt'
 
 
 
@@ -37,7 +37,6 @@ def leerunidad(ruta):
 	with open(tmp, 'rb') as f:
 		# Las dos primeras líneas contienes el volumen y el número de serie (clave de las unidades)
 		vol = c.leerlinea(f)[30:]		# extraemos el nombre del volumen de la línea 1
-		nserie = c.leerlinea(f)[36:]	# extraemos el numero de serie (clave) de la linea 2
 		fechaudit = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 		
 		while True:
@@ -50,8 +49,8 @@ def leerunidad(ruta):
 				libre = int(linea[23:linea.find('bytes')].replace(" ","").replace(".",""))
 			
 		# Creamos la clase Unidad con la información que tenemos
-		unidad = m.Unidad(nserie, vol, libre, fechaudit)
-		unidad.directorio = m.Directorio(ruta, '', 0, 0, 0, '')
+		unidad = m.Unidad(vol, libre, fechaudit)
+		unidad.directorio = m.Directorio(ruta, '', 0, 0, 0, '', 0)
 	return unidad
 
 
@@ -72,7 +71,7 @@ def leer_dir(directorio):
 			fechamod = fichero.fechamod
 		
 	for dir in directorios:
-		subdirectorio = m.Directorio(dir, '', 0, 0, 0, '')
+		subdirectorio = m.Directorio(dir, '', 0, 0, 0, '', directorio)
 		directorio.subdirectorios.append(subdirectorio)
 
 		leer_dir(subdirectorio)
@@ -112,6 +111,7 @@ def leer_ruta(ruta):
 
 
 def act_directorio(directorio):
+	directorio.path = directorio.path[3:]
 	for dir in directorio.subdirectorios:
 		act_directorio(dir)
 		directorio.numfiles += dir.numfiles

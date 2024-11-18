@@ -14,20 +14,20 @@ class Fichero():
 	def imprimir(self):
 		print ('   - ', self.fechamod, self.nombre, self.extension, self.tipo, self.tamano)
 		
-	def exportar(self):
-		return ['a', self.nombre, self.extension, self.fechamod, self.tamano, self.tipo, self.error]
+	def exportar(self, nivel):
+		return ['A', self.nombre, self.extension, self.fechamod, self.tamano, self.tipo, self.error, nivel]
 
 
 
-		
 class Directorio():
-	def __init__(self, path, fechamod, numfiles, numdir, tamano, error):
+	def __init__(self, path, fechamod, numfiles, numdir, tamano, error, dirpadre):
 		self.path = path
 		self.fechamod = fechamod
 		self.numfiles = numfiles
 		self.numdir = numdir
 		self.tamano = tamano
 		self.error = error
+		self.dirpadre = dirpadre
 		self.ficheros = []
 		self.subdirectorios = []
 		
@@ -39,22 +39,21 @@ class Directorio():
 		for dir in self.subdirectorios:
 			dir.imprimir()
 
-	def exportar(self):
-		salida = [['d', self.path, self.fechamod, self.numfiles, self.numdir, self.tamano, self.error]]
+	def exportar(self, nivel):
+		salida = [['D', self.path, self.fechamod, self.numfiles, self.numdir, self.tamano, self.error, nivel]]
 
 		for file in self.ficheros:
-			salida.append(file.exportar())
+			salida.append(file.exportar(nivel))
 		
 		for dir in self.subdirectorios:
-			salida += dir.exportar()
+			salida += dir.exportar(nivel + 1)
 
 		return salida
 
 
         
 class Unidad():
-	def __init__(self, numserie, volumen, libre, fechaudit):
-		self.numserie = numserie
+	def __init__(self, volumen, libre, fechaudit):
 		self.volumen = volumen
 		self.libre = libre
 		self.fechaudit = fechaudit
@@ -62,11 +61,11 @@ class Unidad():
 	
 	def imprimir(self):
 		print ('-' * 75)
-		print ('\n', self.numserie, self.volumen, self.libre, self.fechaudit, '\n')
+		print ('\n', self.volumen, self.libre, self.fechaudit, '\n')
 	
 	def exportar(self):
-		salida = [['u', self.numserie, self.volumen, self.libre, self.fechaudit]]
-		salida += self.directorio.exportar()
+		salida = [['U', self.volumen, self.libre, self.fechaudit]]
+		salida += self.directorio.exportar(0)
 		return salida
 
 

@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
 
+# Proyecto ESPACIO 1.3, analizador de discos (unidades, carpetas, usbs).
+# ======================================================================
+#
+# 06/09/2017	Mejoras a realizar: 
+#
+#		1) Ser capaz de importar la estructura de directorios y archivos del fichero .csv.
+
 import sys, time
 
 
-# M骴ulos del proyecto
-import lectura   as l		# M骴ulo de lectura de informaci髇 de la Unidad, extrae sus directorios y ficheros
-import grabarcsv as g		# M骴ulo que exporta la informaci髇 de la Unidad a fichero .CSV
+# M贸dulos del proyecto
+import lectura   as l		# M贸dulo de lectura de informaci贸n de la Unidad, extrae sus directorios y ficheros
+import grabarcsv as g		# M贸dulo que exporta la informaci贸n de la Unidad a fichero .CSV
 
 
 
@@ -16,7 +23,7 @@ def obtener_ruta():
 	try:
 		ruta = sys.argv[1]
 	except:
-		print ('Por favor indique unidad a leer.')
+		print ('No ha introducido par谩metro. Cargamos en memoria las unidades.', '\n')
 	return ruta
 
 
@@ -28,12 +35,21 @@ if __name__ == "__main__":
 	if ruta != '':
 		tiempo_inicial = time.time() 
 		
-		# Analizar la informaci髇 de la unidad, directorios y ficheros y
+		# Analizar la informaci贸n de la unidad, directorios y ficheros y
 		# se almacena en memoria en clase Unidad, Directorios y Ficheros
 		unidad = l.leer(ruta)
 		
 		tiempo_final = time.time() 
 		print (tiempo_final - tiempo_inicial)
 		
-		# Utilizamos m骴ulo grabarcsv para exportar la informaci髇 de la unidad a fichero .CSV
-		g.Exportarcsv(unidad)
+		# Utilizamos m贸dulo grabarcsv para exportar la informaci贸n de la unidad a fichero .CSV
+		g.Exportar_csv(unidad)
+	else:
+		# Leer una unidad del fichero .CSV
+		unidad = g.Leer_csv()
+		
+		# La volvemos a exportar para verificar que se ha le铆do correctamente
+		g.Exportar_csv(unidad)
+
+# Borramos la variable Unidad
+del unidad

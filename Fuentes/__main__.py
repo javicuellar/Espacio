@@ -6,11 +6,13 @@ import os, sys, time
 import leerbyte as l		# Lee el fichero en modo byte para transformar caractéres inválidos y españoles
 import analisisdir as a		# Analiza el DIR de DOS para extraer la información de unidades, directorios y files.
 import memoria 	as m		# Contiene las Clases Unidad / Directorio / Fichero
+import grabarcsv as g
 
 
 
-filein = '.\Espacio\leerdir.txt'
-fileout = '.\Espacio\leerdir2.txt'
+filein = '.\Espacio2\Tmp\leerdir.txt'
+fileout = '.\Espacio2\Tmp\leerdir2.txt'
+informe = '.\Espacio2\Tmp\Tmp.csv'
 
 
 def obtener_ruta():
@@ -43,10 +45,11 @@ if __name__ == "__main__":
 		# Analizar el DIR mapeado para extraer información de la unidad, directorios y ficheros.
 		# Devuelve la clase Unidad que contiene los subdirectorios.
 		uni = a.analizar(fileout)
-
-		# Sacamos por pantalla la información de la Unidad y directorio principal.
-		uni.imprimir()
-		uni.directorio.imprimir()
-
 		tiempo_final = time.time() 
 		print (tiempo_final - tiempo_inicial)
+		
+		# Utilizamos módulo grabarcsv para exportar la información de la unidad a fichero .CSV
+		g.Exportarcsv(uni, informe)
+		
+		# borramos fichero temporal
+		#os.remove(tmp)

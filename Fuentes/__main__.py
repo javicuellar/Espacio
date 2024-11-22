@@ -1,109 +1,52 @@
 # -*- coding: utf-8 -*-
 
-# Proyecto ESPACIO 1.3, analizador de discos (unidades, carpetas, usbs).
-# ======================================================================
-#
-# 06/09/2017	Mejoras a realizar: 
-#
-#		1) Ser capaz de importar la estructura de directorios y archivos del fichero .csv.
+import os, sys, time
 
-import os
-
-# Módulos del proyecto
-import discos   as d		# Módulo de mantenimiento de Discos/Unidades/Directorios/Ficheros
+# Paquetes del proyecto
+import leerbyte as l		# Lee el fichero en modo byte para transformar caractéres inválidos y españoles
+import analisisdir as a		# Analiza el DIR de DOS para extraer la información de unidades, directorios y files.
+import memoria 	as m		# Contiene las Clases Unidad / Directorio / Fichero
 
 
 
+filein = '.\Espacio\leerdir.txt'
+fileout = '.\Espacio\leerdir2.txt'
 
-def menu():
-	print ('''
-	1. Leer disco
-	2. Listar unidades en memoria
-	
-	8. Leer fichero CSV
-	9. Exportar a CSV Unidades
-	0. Salir
-		''')
+
+def obtener_ruta():
+	ruta = ''
 	try:
-		opcion = int(input('Introduzca opción: '))
+		ruta = sys.argv[1]
 	except:
-		opcion = 9999
-		print ('\n', 'Por favor introduzca un valor numérico.')
-	return opcion
+		print ('Por favor indique unidad a leer.')
+	return ruta
 
 
+def capturar_dir(ruta):
+	s = os.popen('dir ' + ruta + u' /s > ' + filein)
+	s.close()
 
-def valorar_opcion(opcion):
-	os.system('CLS')	# Limpiamos la pantalla
-	
-	if opcion == 1: 
-		ruta = input ('Introduzca ruta: ')
-		# Analizar la información de la ruta introducida por parámetro (unidad, directorios y ficheros)
-		discos.Leer_disco(ruta)
-
-	elif opcion == 2:
-		# Listar las unidades almacenadas en memoria
-		discos.Listar_unidades()
-
-	elif opcion == 8:
-		# Leer unidades del fichero .CSV
-		discos.Leer_csv()
-
-	elif opcion == 9:
-		# Exportamos la información de discos a fichero CSV
-		opcion = 9999
-		while opcion != 0:
-			opcion = submenu_exportar()
-			valorar_exportar(opcion)
-		
-		opcion = 9999
-	elif opcion == 0:
-		print("\n Adios....") 
-
-
-
-def submenu_exportar():
-	print ('''
-	1. Unidades
-	2. Directorios
-	3. Todo
-	0. Salir
-		''')
-	try:
-		opcion = int(input('Introduzca opción: '))
-	except:
-		opcion = 9999
-		print ('\n', 'Por favor introduzca un valor numérico.')
-	return opcion
-
-
-
-def valorar_exportar(opcion):
-	if opcion == 1: 
-		# Exportamos a fichero CSV solo las unidades
-		discos.Exportar_csv('U')
-
-	elif opcion == 2:
-		max_nivel = int(input ('Introduzca nivel máximo de subdirectorios: '))
-		# Exportamos a fichero CSV las unidades y directorios (niveles 0 y 1 por defecto)
-		discos.Exportar_csv('D', max_nivel)
-
-	elif opcion == 3:
-		# Exportamos TODA la información de discos a fichero CSV
-		discos.Exportar_csv('T')
-	
-	elif opcion == 0:
-		print("\n Adios....") 
 
 
 
 if __name__ == "__main__":
-	opcion = 9999
-	discos = d.Discos()
+	ruta = obtener_ruta()
 	
-	while opcion != 0:
-		opcion = menu()
-		valorar_opcion(opcion)
-	
-	# Borramos la variable Unidad
-	del discos
+	if ruta != '':
+		tiempo_inicial = time.time() 
+		
+		capturar_dir(ruta)
+		
+		# Lectura del fichero filein byte a bye para mapear a unicode (tíldes, caracteres no válidos)
+		l.mapeo(filein, fileout)
+		
+		# Analizar el DIR mapeado para extraer información de la unidad, directorios y ficheros.
+		# Devuelve la clase Unidad que contiene los subdirectorios.
+		uni = a.analizar(fileout)
+
+		# Sacamos por pantalla la información de la Unidad y directorio principal.
+		uni.imprimir()
+		uni.directorio.imprimir()
+
+		tiempo_final = time.time() 
+		print (tiempo_final - tiempo_inicial)

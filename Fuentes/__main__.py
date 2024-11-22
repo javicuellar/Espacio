@@ -84,8 +84,9 @@ def valorar_exportar(opcion):
 		discos.Exportar_csv('U')
 
 	elif opcion == 2:
-		# Exportamos a fichero CSV las unidades y directorios (niveles 0 y 1)
-		discos.Exportar_csv('D')
+		max_nivel = int(input ('Introduzca nivel máximo de subdirectorios: '))
+		# Exportamos a fichero CSV las unidades y directorios (niveles 0 y 1 por defecto)
+		discos.Exportar_csv('D', max_nivel)
 
 	elif opcion == 3:
 		# Exportamos TODA la información de discos a fichero CSV

@@ -95,13 +95,13 @@ class Discos():
 	
 
 
-	def Exportar_csv(self, tipo):
+	def Exportar_csv(self, tipo, maxnivel=1):
 		tiempo_ini = time.time() 
 		file_csv = f.FileCSV('w', tipo)
 		
 		info_discos = []
 		for unidad in self.unidades:
-			info_discos += unidad.exportar(tipo)
+			info_discos += unidad.exportar(tipo, maxnivel)
 		
 		# Grabamos la información de discos (una lista) llamando a la función Grabar_CSV
 		file_csv.Grabar_CSV(info_discos, tipo)
@@ -177,9 +177,9 @@ class Unidad():
 		print ('-' * 75)
 		print ('\n', self.volumen, self.libre, self.fechaudit, '\n')
 	
-	def exportar(self, tipo):
+	def exportar(self, tipo, max_nivel):
 		salida = [['U', self.volumen, self.libre, self.fechaudit]]
-		salida += self.directorio.exportar(tipo, 0)
+		salida += self.directorio.exportar(tipo, 0, max_nivel)
 		return salida
 
 	def backup_csv(self):
@@ -252,16 +252,16 @@ class Directorio():
 		for dir in self.subdirectorios:
 			dir.imprimir()
 
-	def exportar(self, tipo, nivel):
+	def exportar(self, tipo, nivel, max_nivel):
 		salida = [['D', self.path, self.fechamod, self.numfiles, self.numdir, self.tamano, self.error, nivel]]
 
 		if tipo == 'T':
 			for file in self.ficheros:
 				salida.append(file.exportar(nivel))
 		
-		if tipo == 'T' or (tipo == 'D' and nivel < 1):
+		if tipo == 'T' or (tipo == 'D' and nivel < max_nivel):
 			for dir in self.subdirectorios:
-				salida += dir.exportar(tipo, nivel + 1)
+				salida += dir.exportar(tipo, nivel + 1, max_nivel)
 
 		return salida
 

@@ -1,8 +1,7 @@
-# Proyecto ESPACIO 1.4, analizador de discos (unidades, carpetas, usbs).
-======================================================================
+# Proyecto ESPACIO 1.41, analizador de discos (unidades, carpetas, usbs).
 
 
-	El proyecto lee la estructura de archivos y subdirectorios de una ruta data, la graba en memoria (clases Unidad, Directorio y Fichero) y exporta la información en un informe a .csv.
+El proyecto lee la estructura de archivos y subdirectorios de una ruta data, la graba en memoria (clases Unidad, Directorio y Fichero) y exporta la información en un informe a .csv.
 
 
 ### Componentes actuales del proyecto (07/09/2017):
@@ -19,33 +18,33 @@
 
 ### Mejoras a realizar:    (05/09/2017)
 
-	   OK	1) Ser capaz de importar la estructura de directorios y archivos del fichero .csv.
-			2) Actualizar la información de una unidad (leida de .csv) con la info actual.
+02/10/2017  OK  1) Exportar info de directorio con nivel de subdirectorio como parámetro.
+05/09/2017	OK	1) Ser capaz de importar la estructura de directorios y archivos del fichero .csv.
+				2) Actualizar la información de una unidad (leida de .csv) con la info actual.
+				3) Exportar a .csv (simple), es decir, unidad, y 2-3 niveles de subdirectorios.
 
 		* Usar 7z o Zipfile(módulo) para listar y poder leer los archivos que contiene.
-		* Exportar a .csv (simple), es decir, unidad, y 2-3 niveles de subdirectorios.
 		* Analizar la información leída para: buscar ficheros duplicados, etc.
 
 ---------------------------------------------------------------------------------------------------
 
 08/09/2017	- Renombramos módulo grabarcsv a ficherocsv, sacamos las funcionalidades de las clases de Unidades, directorios y Ficheros.
 
-		- Ampliada la función de leer CSV para leer varias unidades.
-		- Incluido un menú en __main__ para realizar las operaciones de lectura, exportar, etc.
-		- Incluido submenú para Exportar, se puede exportar Unidades, Directorios ppales. o todo.
+- Ampliada la función de leer CSV para leer varias unidades.
+- Incluido un menú en __main__ para realizar las operaciones de lectura, exportar, etc.
+- Incluido submenú para Exportar, se puede exportar Unidades, Directorios ppales. o todo.
 
 ---------------------------------------------------------------------------------------------------
 
-07/09/2017	- Desarrollada función para leer la estructura de directorios de un fichero .CSV y grabarla en memoria en clases Unidad, 
-		Directorios, Ficheros.
-		- Renombramos módulo memoria a discos, juntamos en él todas las funcionalidades de las unidades, en la nueva clase Discos.
+07/09/2017	- Desarrollada función para leer la estructura de directorios de un fichero .CSV y grabarla en memoria en clases Unidad, Directorios, Ficheros.
+		
+- Renombramos módulo memoria a discos, juntamos en él todas las funcionalidades de las unidades, en la nueva clase Discos.
 
 ---------------------------------------------------------------------------------------------------
 
 ### __main__.py		Módulo principal
 	
 	Recoge parámetros de la línea de comandos, el directorio a escanear (utilizando el módulo sys).
-
 	Llama al módulo lectura para usar su función leer(ruta).
 
 		- leerunidad(path).- usa el comando OS.POPEN(ins. dos) para ejectuar el DIR del DOS.

@@ -6,34 +6,75 @@ import os, time
 import memoria 	as m		# Contiene las Clases Unidad / Directorio / Fichero
 
 
-
 tipos = {'.py':'Python', '.pyc':'Python', '.txt':'texto', '.jpg':'foto', '.mp4':'video', '.doc':'documento','.docx':'documento',
 		'.xls':'Excel', '.xlsx':'Excel', '.csv':'Excel', '.ppt':'presentacion', '.pptx':'presentacion', '.pdf':'pdf', '':'vacio',
 		'.exe':'ejecutable', '.sqlite':'BDSqlite'} 
-
-
-fec_display = '%Y-%m-%d %H:%M:%S'   # establece formato de fecha-hora
 sintipo = []
 
 
+dicbyte = { b'\x81' : b'u',	 b'\xa6' : b'a', b'\xad' : b'!', 	# caractéres no válidos
+			b'\xa0' : b'\xe1',	# á
+			b'\x82' : b'\xe9',	# é
+			b'\xa1' : b'\xed',	# í
+			b'\xa2' : b'\xf3',	# ó
+			b'\xa3' : b'\xfa', 	# ú
+			b'\xa4' : b'\xf1' 	# ñ
+			}
+
+
+fec_display = '%Y-%m-%d %H:%M:%S'   # establece formato de fecha-hora
+
+
+
+def leerlinea(file):
+	linea, byte = '', b' '
+	byte = file.read(1)
+	while byte != b'' and byte != b'\r':
+		if byte in dicbyte:
+			# caracter transformado que da error o es invalido
+			byte = dicbyte[byte]
+		linea += byte.decode(u'cp1252')
+		#print ('l: ', linea)
+		byte = file.read(1)
+	#print (linea, ' > ', linea[2:12])
+	return linea
+
+
+def calculardirectorio(directorio, ruta):
+	num_subdir = len(directorio.subdirectorios) - 1
+	subdir = directorio.subdirectorios
+	
+	for dir in range(num_subdir, -1, -1):
+		if ruta.find(subdir[dir].path) == 0:
+			return calculardirectorio(subdir[dir], ruta)
+	return directorio
+		
+
+def actdirectorio(directorio):
+	for dir in directorio.subdirectorios:
+		actdirectorio(dir)
+		directorio.numfiles += dir.numfiles
+		directorio.numdir += dir.numdir + 1
+		directorio.tamano += dir.tamano
+
 
 def analizar(fich):
-	with open(fich, 'r') as f:
+	with open(fich, 'rb') as f:
 		# Leyendo fichero con el contenido de un comando DIR en DOS
 		# Las dos primeras líneas contienes el volumen y el número de serie (clave de las unidades)
-		vol = f.readline()[30:-1]		# extraemos el nombre del volumen de la línea 1
-		nserie = f.readline()[36:-1]	# extraemos el numero de serie (clave) de la linea 2
+		vol = leerlinea(f)[30:]			# extraemos el nombre del volumen de la línea 1
+		nserie = leerlinea(f)[36:]	# extraemos el numero de serie (clave) de la linea 2
 		fechaudit = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 		
 		# Creamos la clase Unidad con la información que tenemos
 		unidad = m.Unidad(nserie, vol, 0, fechaudit)
 		
 		# Iniciamos contadores de directorio y ficheros y leemos la tercera línea vacía
-		contdir, contfiles = 0, 0
-		linea = f.readline()
+		contdir = 0
+		linea = leerlinea(f)
 		
 		while True:
-			linea = f.readline()
+			linea = leerlinea(f)
 			if linea == '':
 				break	# Hemos llegado al final del fichero y salimos del bucle
 			
@@ -41,56 +82,68 @@ def analizar(fich):
 				# Leyendo línea vacía que ignoramos
 				pass
 			
-			elif linea[1:11] == 'Directorio': 
+			elif linea[2:12] == 'Directorio': 
 				# Comienzan los archivos de un directorio, creamos el subdirectorio
-				dir = linea[15:-1]
-				contdir += 1
+				dir = linea[16:]
 				# Leemos dos líneas más, la primera vacía y la siguiente contiene la fecha de mod.
-				linea = f.readline()
-				linea = f.readline()
-				fechamod = linea[0:17]
+				linea = leerlinea(f)
+				linea = leerlinea(f)
+				fechamod = linea[1:18]
+				
+				# Actualizamos el número de fihceros del directorio leído anteriormente
+				if contdir > 0:
+					dirleido.numfiles = contfiles
+					dirleido.tamano = tamfiles
 				
 				# Grabamos directorio, falta información (numfiles, numdir, tamano)
-				directorio = m.Directorio(dir, fechamod, 0, 0, 0)
+				dirleido = m.Directorio(dir, fechamod, 0, 0, 0)
 				
-				if contdir == 1:
-					unidad.directorio = directorio
+				if contdir == 0:
+					unidad.directorio = dirleido
+				elif contdir == 1:
+					unidad.directorio.subdirectorios.append(dirleido)
 				else:
-					unidad.directorio.subdirectorios.append(directorio)
+					calculardirectorio(unidad.directorio, dir).subdirectorios.append(dirleido)
+				
+				contdir += 1
+				contfiles, tamfiles = 0, 0
 
-			elif len(linea) > 34 and linea[1].isdigit() and linea[34].isdigit():
+			elif len(linea) > 34 and linea[1].isdigit() and linea[35].isdigit():
 				# Leyendo la información de un fichero
-				contfiles += 1
-				fechamod = linea[0:17]
-				tamano = int(linea[19:35].replace(' ', '').replace('.', ''))
-				nombre, extension = os.path.splitext(linea[36:-1])
+				fechamod = linea[1:18]
+				tamano = int(linea[19:36].replace(' ', '').replace('.', ''))
+				nombre, extension = os.path.splitext(linea[37:])
 				tipo = ''
-				if extension in tipos:
-					tipo = tipos[extension]
-				elif not extension in sintipo:
-					sintipo.append(extension)
+				if extension.lower() in tipos:
+					tipo = tipos[extension.lower()]
+				elif not extension.lower() in sintipo:
+					sintipo.append(extension.lower())
 				
-				directorio.ficheros.append(m.Fichero(nombre, extension, tipo, fechamod, tamano))
+				contfiles += 1
+				tamfiles += tamano
 				
-			elif linea[5:10] == 'Total': 
+				dirleido.ficheros.append(m.Fichero(nombre, extension, tipo, fechamod, tamano))
+				
+			elif linea[6:11] == 'Total': 
+				# Actualizamos el número de fihceros del directorio leído anteriormente
+				if contdir > 1:
+					dirleido.numfiles = contfiles
+					dirleido.tamano = tamfiles
+
 				# Leyendo las últimas líneas con la información de num. ficheros y num. dir.
 				# y espacio libre en la unidad
-				linea = f.readline()
+				linea = leerlinea(f)
 				contfiles = int(linea[5:17].replace(' ', '').replace('.', ''))	
-				tamano = int(linea[26:40].replace(' ', '').replace('.', ''))
+				tamano = int(linea[28:42].replace(' ', '').replace('.', ''))
 								
-				linea = f.readline()
-				contdir = int(linea[5:17].replace(' ', '').replace('.', ''))
-				elibre = int (linea[22:linea.find('bytes')].replace(" ","").replace(".",""))
+				linea = leerlinea(f)
+				elibre = int (linea[23:linea.find('bytes')].replace(" ","").replace(".",""))
 				
-				# Actualizamos num. ficheros, num. dir., tamano y espacio libre de la Unidad
-				unidad.directorio.numfiles = contfiles
-				unidad.directorio.numdir = contdir
-				unidad.directorio.tamano = tamano
 				unidad.libre = elibre
-	return unidad
 	
-
+	actdirectorio(unidad.directorio)
+	
+	return unidad
 
 	
 if __name__ == "__main__":

@@ -1,17 +1,6 @@
 # -*- coding: utf-8 -*-
 
-'''
-import locale
 
-# Definimos el formato que deseamos
-locale.setlocale(locale.LC_ALL, "es_ES.utf-8")
-
-
-def formateo_num(num):
-	return locale.format("%.*f", (2,num), True)
-'''
-
-	
 
 class Fichero(object):
 	def __init__(self, nombre, extension, tipo, fechamod, tamano):

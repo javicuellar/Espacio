@@ -3,16 +3,13 @@
 import os, sys, time
 
 # Paquetes del proyecto
-import leerbyte as l		# Lee el fichero en modo byte para transformar caractéres inválidos y españoles
-import analisisdir as a		# Analiza el DIR de DOS para extraer la información de unidades, directorios y files.
-import memoria 	as m		# Contiene las Clases Unidad / Directorio / Fichero
-import grabarcsv as g
+import analisisdir as a		# Analiza el resultado del comando DIR para extraer información de la unidad
+import grabarcsv   as g
 
 
 
-filein = '.\Espacio2\Tmp\leerdir.txt'
-fileout = '.\Espacio2\Tmp\leerdir2.txt'
-informe = '.\Espacio2\Tmp\Tmp.csv'
+tmp = '.\Espacio\\Tmp\\tmp.txt'
+informe = '.\Espacio\\Tmp\\tmp.csv'
 
 
 def obtener_ruta():
@@ -25,12 +22,12 @@ def obtener_ruta():
 
 
 def capturar_dir(ruta):
-	s = os.popen('dir ' + ruta + u' /s > ' + filein)
+	s = os.popen('dir ' + ruta + u' /s > ' + tmp)
 	s.close()
 
 
 
-
+	
 if __name__ == "__main__":
 	ruta = obtener_ruta()
 	
@@ -38,13 +35,11 @@ if __name__ == "__main__":
 		tiempo_inicial = time.time() 
 		
 		capturar_dir(ruta)
-		
-		# Lectura del fichero filein byte a bye para mapear a unicode (tíldes, caracteres no válidos)
-		l.mapeo(filein, fileout)
-		
+
 		# Analizar el DIR mapeado para extraer información de la unidad, directorios y ficheros.
 		# Devuelve la clase Unidad que contiene los subdirectorios.
-		uni = a.analizar(fileout)
+		uni = a.analizar(tmp)
+		
 		tiempo_final = time.time() 
 		print (tiempo_final - tiempo_inicial)
 		

@@ -1,4 +1,4 @@
-# Proyecto ESPACIO 2.01, analizador de discos (unidades, carpetas, usbs).
+# Proyecto ESPACIO 2.1, analizador de discos (unidades, carpetas, usbs).
 
 
 El proyecto pretende leer los archivos y subdirectorios de una ruta data, y posteriormente realizar un reporte (en .csv) para su análisis.
@@ -38,14 +38,16 @@ __main__.py		Módulo principal
 
    	- captura_dir(path).- usa el comando OS.POPEN(inst. dos) para ejectuar el DIR del DOS.
 
-	- mapeo(filein, fileout).- mapea el fichero filein a unicode, eliminando caracteres no válidos y transformando las tildes, ñ, etc.
-			Utiliza módulo: leerbyte.py
 
-	- analizar(fleout).- Lee el fichero que contiene la salida del DIR mapeada correctamente y extrae la información de la Unidad, Directorio principal, subdirectorios y ficheros.
+	- analizar(fle).- Lee el fichero que contiene la salida del DIR byte a byte, mapeando las líneas correctamente antes de extrae la información de la Unidad, Directorio principal, subdirectorios y ficheros.
 			Utiliza módulo: analisisdir.py
 
 	El resultado lo va almacenando en memoria, en la clase Unidad que contiene la clase Directorio.
 	La clase Directorio es la que contiene una lista con clases ficheros y una lista con clases subdirectorios.
 			Utiliza módulo: memoria.py
 
-	- imprimir.- Usa el mótodo imprimir de la clase Unidad y de la clase Directorios para imprimir en pantalla la información extraida del DIR.
+
+	- exportarcsv.- Usa el método exportar de la clase Directorio para exportar la información de la Unidad a un
+	fichero .CSV.
+			Utiliza módulo: grabarcsv.py
+	

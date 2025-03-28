@@ -1,0 +1,39 @@
+Diccionario;Clave;Valor
+App;App;Espacio
+Version;Espacio;6.03
+Version;Actualizar;NO
+Master;Python .\Fuentes\Espacio.py;Espacio.exe
+Analisis;Python .\Fuentes\LeerDir.py;LeerDir.exe
+Pruebas;Entorno;Pruebas
+Ruta;ruta;D:\Python\
+Ruta;tmp;D:\Python\Espacio\Tmp
+Ruta;Almacen;Espacio.db
+Ruta;NAS;PC-JAVI
+Ruta;RutaArranque;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\
+Ruta;NombreArranque;Espacio arranque.bat
+Servidor;servidor;gAAAAABkcGTtdFJsrlX2Rwsah0K7u0f8_WaJ45OZ1WhdeM-inavPTztVVKWUJYayvs9PCLVgdWpYP-DK3UjsaQxX4zWCD6hWZEgVMp9pnIjOtSITckFbu8I=
+FTP;usuario;gAAAAABkcGyIF3v3wIS1Y8xryVxNSPF_bo7XwfkvhRMRSMWvL5WKZ-ZYaKWz8cQCk4NZtIL14d2aC4hpCWcx3QbgAMQXIiZhVg==
+FTP;password;gAAAAABkcGzGeqV8WQiAwJzDdN-_COBXgArTFJqGKAvuD4_CwqGptkfN2-dkIvudacUVcysoKPZfD2w0aLXN8OZDw84ME26NVA==
+SMB;usuario;gAAAAABkcGzGh8xvzsgZGd8BfMTvRAZvWaPrEQ4rK2jJtxahxL7-uVpjZfcE3rldqugtMf2aP7Xbt4wEjKY1jW7EDijyL4V4Dw==
+SMB;password;gAAAAABkcGzGw5bfyqE3fZW4elFrFqrODpTY4Q21--pUF67i4qotq6is8_moVapCkiKb534VLKCkBzIoAyS-MttciASm00sh0Q==
+Tipos;.;Vacio
+Tipos;.py;Python
+Tipos;.pyc;Python
+Tipos;.txt;Texto
+Tipos;.jpg;Foto
+Tipos;.mp4;Video
+Tipos;.doc;Word
+Tipos;.docx;Word
+Tipos;.xls;Excel
+Tipos;.xlsx;Excel
+Tipos;.csv;Excel
+Tipos;.ppt;Powerpoint
+Tipos;.pptx;Powerpoint
+Tipos;.pdf;Pdf
+Tipos;.exe;Ejecutable
+Tipos;.bat;Proceso lotes
+Tipos;.sqlite;BD SQLite
+Tipos;.sqlite3;BD SQLite
+Tipos;.db;BD SQLite
+Tipos;.db3;BD SQLite
+Tipos;.mp3;Musica

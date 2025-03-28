@@ -1,11 +1,103 @@
 Proyecto ESPACIO, analizador de discos (unidades, carpetas, usbs).
 
 ==================================================================
+	El proyecto permite leer los archivos y subdirectorios de una ruta data (usando OS.LISDIR),
+
+	y posteriormente realizar un reporte (en .csv)
+ para su análisis.
+
+
+Componentes del proyecto
+
+
+	Leeme.txt	Este fichero informativo
+	__main__.txt	Fichero informativo
+ versión 1.3
+	__main__.py	Script principal
+
+	discos.py	Módulo que contiene las clases Discos, Unidad, Directorio, Fichero
+	lectura.py	Módulo encargado de leer los ficheros y directorios
+
+	mapeo.py	Módulo para mapear carácteres inválidos del nombre de un directorio o archivo.
+	ficherocsv.py	Módulo encargado de manejar el fichero .csv
+
+
+
+
+
 
 
 
 Versiones:
 
+
+   1.41 (02/10/2017)
+   ================	
+
+	- Se incorpora en el submenú de Exportar directorios, la posibilidad de indicar el número de subdirectorios a
+	exportar.
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+   1.4 (08/09/2017)
+   ================	
+
+	- Se rediseña los módulos: se crea el módulo discos a partir del de memoria y se incorporan a él todos
+	los tratamientos que se hacen sobre las clases Unidades, Directorios y Ficheros de los otros módulos como
+	son el de lectura y el de ficherocsv (que antes se llamaba grabarcsv).
+
+	- Se incorpora la funcionalidad de leer todas las unidades del fichero CSV (antes solo leíamos una unidad).
+
+	- Se incorpora un menú en el módulo principal para: leer discos, leer CSV, exportar a CSV, etc.
+	- Se incorpora submenú en Exportar para exportar Unidades, Directorios ppales. o todo.
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+   1.3 (07/09/2017)
+   ================	
+
+	- Se incorpora a la versión 1.2 la función de leer el fichero .CSV y guardar en memoria la estructura
+	de Unidad, Directorios y Ficheros.
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+   1.2 (05/09/2017)
+   ================	
+
+
+	El proyecto permite leer los archivos y subdirectorios de una ruta data (usando OS.LISDIR),
+
+	y posteriormente realizar un reporte (en .csv)
+ para su análisis.
+
+	- Las mejoras de la versión 2.1 (que recoge la información de un DIR de DOS) se incorporan a la
+	versión 1.0 (dejando una versión 1.1 por medio).
+
+
+	Componentes del proyecto (05/09/2017):
+
+
+		Leeme.txt	Este fichero informativo
+		__main__.txt	Fichero informativo
+ versión 1.2
+		__main__.py	Script principal
+
+		lectura.py	Módulo encargado de leer los ficheros y directorios
+
+		mapeo.py	Módulo para mapear carácteres inválidos del nombre de un directorio o archivo.
+		grabarcsv.py	Módulo encargado de la extracción de la info. a fichero .csv
+
+
+
+		memoria.py	Módulo que contiene las clases Unidad, Directorio, Fichero
+
+
+---------------------------------------------------------------------------------------------------------------------
 
    2.1 (31/08/2017)
    ================	
